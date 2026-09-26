@@ -1,0 +1,519 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+
+  .search-glow:focus-within {
+    box-shadow: 0 0 35px -5px rgba(249, 87, 33, 0.25);
+  }
+</style>
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-24 text-center">
+  <!-- Top Micro Tag -->
+  <div class="animate-fade-in inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-stone-200 shadow-sm text-stone-600 text-xs font-semibold mb-6 transition-transform hover:scale-105 duration-200 cursor-default">
+    <span class="relative flex h-2 w-2">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-teal opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-teal"></span>
+    </span>
+    Automated Credibility & Skill Intelligence for Engineers
+  </div>
+
+  <!-- Hero Title -->
+  <h1 class="animate-fade-in delay-100 text-4xl sm:text-6xl font-black tracking-tight text-stone-900 leading-[1.1] mb-6">
+    Hire <span class="text-brand-orange inline-block hover:scale-105 transition-transform duration-200">Talents</span> <br />
+    you can <span class="text-brand-teal inline-block hover:scale-105 transition-transform duration-200">Trust.</span>
+  </h1>
+
+  <p class="animate-fade-in delay-200 text-stone-500 text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed font-normal">
+    Objective intelligence on architecture depth, commit velocity, framework mastery, and engineering signals before making an offer.
+  </p>
+
+  <!-- Dark Espresso Search Bar -->
+  <form action="{% url 'core:audit' %}" method="POST" class="animate-fade-in delay-300 max-w-2xl mx-auto mb-6" id="audit-form">
+    {% csrf_token %}
+    <div class="p-1.5 rounded-2xl bg-espresso-900 shadow-2xl flex items-center border border-espresso-800 transition-all duration-300 search-glow">
+      <div class="pl-4 pr-2 text-stone-400">
+        <svg class="w-5 h-5 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+
+      <input 
+        type="text" 
+        name="username" 
+        placeholder="Enter GitHub handle or URL (e.g. Ezra-Men)" 
+        required
+        autocomplete="off"
+        class="w-full py-3 bg-transparent text-white placeholder-stone-400 text-sm focus:outline-none"
+      />
+
+      <button 
+        type="submit" 
+        id="submit-btn"
+        class="px-6 py-3 rounded-xl bg-brand-orange hover:bg-brand-orangeHover active:scale-95 text-white font-bold text-xs uppercase tracking-wider transition-all duration-150 flex items-center gap-1.5 shadow-md flex-shrink-0">
+        <span>Audit Talent →</span>
+      </button>
+    </div>
+
+    <!-- Live Ingestion State Indicator -->
+    <div id="loading-state" class="hidden mt-4 text-xs font-semibold text-brand-orange flex items-center justify-center gap-2 animate-pulse">
+      <svg class="animate-spin h-4 w-4 text-brand-orange" viewBox="0 0 24 24" fill="none">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+      <span>Ingesting GitHub repositories & generating multi-model AI audit...</span>
+    </div>
+  </form>
+
+  <!-- Error Alert -->
+  {% if error %}
+  <div class="animate-fade-in max-w-2xl mx-auto p-4 mb-8 text-xs font-medium rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-left shadow-sm flex items-start gap-2.5">
+    <svg class="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+    </svg>
+    <div>
+      <p class="font-bold text-rose-800">Audit Notice</p>
+      <p class="mt-0.5">{{ error }}</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Espresso Demo Chips -->
+  <div class="animate-fade-in delay-300 mb-14">
+    <p class="text-[11px] font-bold uppercase tracking-wider text-stone-400 mb-3">Or inspect pre-audited engineers</p>
+    <div class="flex flex-wrap items-center justify-center gap-2">
+      <a href="?user=Ezra-Men#audit-result" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-espresso-900 border border-espresso-800 hover:border-brand-orange hover:-translate-y-0.5 text-xs text-white transition-all shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-orange"></span>
+        <span>@Ezra-Men</span>
+        <span class="text-[10px] text-stone-400 font-mono">(Backend Dev)</span>
+      </a>
+      <a href="?user=tiangolo#audit-result" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-espresso-900 border border-espresso-800 hover:border-brand-teal hover:-translate-y-0.5 text-xs text-white transition-all shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-teal"></span>
+        <span>@tiangolo</span>
+        <span class="text-[10px] text-stone-400 font-mono">(Senior Architect)</span>
+      </a>
+      <a href="?user=ke-mobile-dev#audit-result" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-espresso-900 border border-espresso-800 hover:border-amber-400 hover:-translate-y-0.5 text-xs text-white transition-all shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+        <span>@ke-mobile-dev</span>
+        <span class="text-[10px] text-stone-400 font-mono">(Mobile Dev)</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- DYNAMIC AUDIT PASSPORT CARD -->
+  {% if active_profile %}
+  <div id="audit-result" class="animate-fade-in max-w-2xl mx-auto rounded-3xl bg-espresso-900 text-white p-6 sm:p-8 text-left shadow-2xl border border-espresso-800 mb-20 transition-all hover:border-espresso-700">
+    <!-- Header -->
+    <div class="flex items-start justify-between pb-6 border-b border-stone-800">
+      <div class="flex items-center gap-4">
+        <img src="{{ active_profile.avatar_url }}" alt="{{ active_profile.username }}" crossorigin="anonymous" class="w-16 h-16 rounded-2xl border border-stone-700 object-cover shadow-sm">
+        <div>
+          <h2 class="text-xl font-bold text-white tracking-tight">{{ active_profile.name|default:active_profile.username }}</h2>
+          <p class="text-xs text-stone-400 font-mono">@{{ active_profile.username }}</p>
+          {% if active_profile.location %}
+          <p class="text-[11px] text-stone-400 mt-1">📍 {{ active_profile.location }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <!-- Score Circle -->
+      <div class="flex flex-col items-center justify-center w-14 h-14 rounded-2xl bg-espresso-950 border border-brand-orange/40 text-brand-orange shadow-inner">
+        <span class="text-lg font-black leading-none">{{ active_profile.confidence_score }}</span>
+        <span class="text-[9px] uppercase tracking-wider font-bold text-stone-400 mt-0.5">Score</span>
+      </div>
+    </div>
+
+    <!-- Metrics Row -->
+    <div class="grid grid-cols-3 gap-3 py-5 border-b border-stone-800 text-center">
+      <div class="p-3 rounded-xl bg-espresso-950/60 border border-stone-800/80">
+        <p class="text-[10px] text-stone-400 uppercase font-semibold">Specialization</p>
+        <p class="text-xs font-bold text-white mt-1">{{ active_profile.primary_role }}</p>
+      </div>
+      <div class="p-3 rounded-xl bg-espresso-950/60 border border-stone-800/80">
+        <p class="text-[10px] text-stone-400 uppercase font-semibold">Tier</p>
+        <p class="text-xs font-bold text-brand-teal mt-1">{{ active_profile.get_seniority_level_display }}</p>
+      </div>
+      <div class="p-3 rounded-xl bg-espresso-950/60 border border-stone-800/80">
+        <p class="text-[10px] text-stone-400 uppercase font-semibold">Repositories</p>
+        <p class="text-xs font-bold text-white mt-1">{{ active_profile.public_repos_count }}</p>
+      </div>
+    </div>
+
+    <!-- Tech Stack Chips -->
+    <div class="py-5 border-b border-stone-800">
+      <p class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2.5">Demonstrated Stack</p>
+      <div class="flex flex-wrap gap-1.5">
+        {% for skill in active_profile.top_skills %}
+        <span class="px-2.5 py-1 rounded-lg bg-espresso-950 border border-stone-800 text-[11px] font-medium text-stone-300">
+          {{ skill }}
+        </span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- AI Hiring Manager Verdict -->
+    <div class="py-5 border-b border-stone-800">
+      <p class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-2">Audit Verdict</p>
+      <div class="p-4 rounded-xl bg-espresso-950 border border-stone-800/90 text-xs leading-relaxed text-stone-300 font-normal">
+        "{{ active_profile.summary }}"
+      </div>
+    </div>
+
+    <!-- Signal Matrices -->
+    {% if active_profile.metrics_signals %}
+    <div class="pt-5 pb-2">
+      <p class="text-[10px] font-bold uppercase tracking-wider text-stone-400 mb-3">Signal Breakdown</p>
+      <div class="grid grid-cols-3 gap-2.5">
+        {% for key, val in active_profile.metrics_signals.items %}
+        <div class="p-3 rounded-xl bg-espresso-950/70 border border-stone-800">
+          <p class="text-[9px] uppercase font-bold text-stone-400 mb-1">
+            {% if key == 'commit_cadence' %}Commit Cadence
+            {% elif key == 'architecture_depth' %}Architecture
+            {% elif key == 'collaboration' %}Collaboration
+            {% else %}{{ key }}{% endif %}
+          </p>
+          <p class="text-[11px] text-stone-200 leading-relaxed">{{ val }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Embed Badge, Social Snapshot & Share Bar -->
+    <div class="mt-6 pt-5 border-t border-stone-800 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <img src="{% url 'core:badge' active_profile.username %}" alt="Badge" class="h-5 rounded">
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Download PNG Snapshot for LinkedIn / X -->
+        <button 
+          type="button"
+          onclick="downloadCardSnapshot('{{ active_profile.username }}')"
+          id="download-btn"
+          class="px-3.5 py-1.5 rounded-lg bg-brand-orange hover:bg-brand-orangeHover active:scale-95 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-md">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <span id="download-btn-text">Download Snapshot (PNG)</span>
+        </button>
+
+        <!-- Copy Badge Button -->
+        <button 
+          type="button"
+          onclick="navigator.clipboard.writeText(`[![DevAudit Verified](${window.location.origin}{% url 'core:badge' active_profile.username %})](${window.location.href})`); alert('README Markdown badge copied to clipboard!');"
+          class="px-3.5 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 active:scale-95 text-stone-200 text-xs font-semibold transition-all">
+          Copy README Badge
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- METHODOLOGY: How DevAudit Works -->
+  <section id="how-it-works" class="pt-8 pb-16">
+    <p class="text-[11px] font-bold tracking-widest uppercase text-stone-400 mb-2">// METHODOLOGY</p>
+    <h2 class="text-2xl sm:text-3xl font-black text-stone-900 mb-10">How DevAudit Works</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 text-left max-w-3xl mx-auto">
+      <!-- Step 01 -->
+      <div class="group p-6 rounded-2xl bg-espresso-900 text-white border border-espresso-800 shadow-xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-orange/40">
+        <div>
+          <span class="text-2xl font-black text-brand-orange font-mono group-hover:translate-x-1 inline-block transition-transform duration-200">01</span>
+          <h3 class="text-sm font-bold text-white mt-3 mb-2">Ingestion & Sanitization</h3>
+          <p class="text-xs text-stone-300 leading-relaxed font-normal">
+            Extracts public push activity, eliminates cloned/forked repositories, and calculates authentic language bytecode distributions.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 02 -->
+      <div class="group p-6 rounded-2xl bg-espresso-900 text-white border border-espresso-800 shadow-xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-orange/40">
+        <div>
+          <span class="text-2xl font-black text-brand-orange font-mono group-hover:translate-x-1 inline-block transition-transform duration-200">02</span>
+          <h3 class="text-sm font-bold text-white mt-3 mb-2">Architecture Parsing</h3>
+          <p class="text-xs text-stone-300 leading-relaxed font-normal">
+            Evaluates production signals: CI/CD test automation, microservices/modularity, containerization, and repository commit velocity.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 03 -->
+      <div class="group p-6 rounded-2xl bg-espresso-900 text-white border border-espresso-800 shadow-xl flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-orange/40">
+        <div>
+          <span class="text-2xl font-black text-brand-orange font-mono group-hover:translate-x-1 inline-block transition-transform duration-200">03</span>
+          <h3 class="text-sm font-bold text-white mt-3 mb-2">AI Audit Synthesis</h3>
+          <p class="text-xs text-stone-300 leading-relaxed font-normal">
+            Multi-tier LLM evaluation synthesizes signals into a 0–100 confidence score, seniority classification, and objective hiring verdict.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENGINEERING ROADMAP / SLIDING CAROUSEL -->
+  <section id="commercial-roadmap" class="pt-4 pb-16 max-w-4xl mx-auto text-left">
+    <div class="p-8 sm:p-10 rounded-3xl bg-white border border-stone-200 shadow-sm relative overflow-hidden">
+      
+      <!-- Section Header with Controls -->
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-brand-orange">Engineering Roadmap</span>
+          <h3 class="text-xl sm:text-2xl font-black text-stone-900 mt-1">DevAudit Scaling Architecture</h3>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 rounded-full bg-stone-100 text-stone-600 text-[11px] font-bold font-mono border border-stone-200 hidden sm:inline-block">
+            Target v2.0
+          </span>
+          <!-- Navigation Buttons -->
+          <div class="flex items-center gap-1.5">
+            <button 
+              type="button" 
+              onclick="prevSlide()" 
+              aria-label="Previous Slide"
+              class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button 
+              type="button" 
+              onclick="nextSlide()" 
+              aria-label="Next Slide"
+              class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carousel Viewport -->
+      <div id="carousel-viewport" class="overflow-hidden relative w-full">
+        <!-- Slides Track (Smooth Transform Transition) -->
+        <div id="carousel-track" class="flex transition-transform duration-700 ease-in-out">
+          
+          <!-- Slide 01: Private Repo OAuth -->
+          <div class="w-full sm:w-1/2 flex-shrink-0 px-2.5">
+            <div class="h-full p-6 rounded-2xl bg-espresso-900 text-white border border-espresso-800 shadow-md flex flex-col justify-between transition-all hover:border-brand-orange/40">
+              <div>
+                <span class="text-xs font-mono font-bold text-brand-orange tracking-widest uppercase">Phase 01</span>
+                <h4 class="text-base font-bold text-white mt-2 mb-2 flex items-center gap-2">
+                  <span>Private Repo OAuth Connect</span>
+                </h4>
+                <p class="text-xs text-stone-300 leading-relaxed font-normal">
+                  Zero-retention OAuth pipeline allowing senior builders to verify private client commits, pull requests, and code cadence without exposing sensitive client IP.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-stone-800 flex items-center justify-between text-[11px] text-stone-400">
+                <span>Status: In Architecture</span>
+                <span class="text-brand-teal font-mono font-semibold">Q1 2027</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 02: ATS Direct Integration -->
+          <div class="w-full sm:w-1/2 flex-shrink-0 px-2.5">
+            <div class="h-full p-6 rounded-2xl bg-espresso-900 text-white border border-espresso-800 shadow-md flex flex-col justify-between transition-all hover:border-brand-orange/40">
+              <div>
+                <span class="text-xs font-mono font-bold text-brand-orange tracking-widest uppercase">Phase 02</span>
+                <h4 class="text-base font-bold text-white mt-2 mb-2 flex items-center gap-2">
+                  <span> Direct ATS Webhook Connect</span>
+                </h4>
+                <p class="text-xs text-stone-300 leading-relaxed font-normal">
+                  Turnkey webhooks for Greenhouse, Ashby, and Lever. Automatically run background proof-of-work checks when an applicant submits their resume.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-stone-800 flex items-center justify-between text-[11px] text-stone-400">
+                <span>Status: Planned Spec</span>
+                <span class="text-brand-teal font-mono font-semibold">Q2 2027</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 03: Anti-Gaming & AI Bot Detection -->
+          <div class="w-full sm:w-1/2 flex-shrink-0 px-2.5">
+            <div class="h-full p-6 rounded-2xl bg-espresso-900 text-white border border-espresso-800 shadow-md flex flex-col justify-between transition-all hover:border-brand-orange/40">
+              <div>
+                <span class="text-xs font-mono font-bold text-brand-orange tracking-widest uppercase">Phase 03</span>
+                <h4 class="text-base font-bold text-white mt-2 mb-2 flex items-center gap-2">
+                  <span> Commit Entropy & Bot Detection</span>
+                </h4>
+                <p class="text-xs text-stone-300 leading-relaxed font-normal">
+                  Mathematical diff entropy analysis to flag bot-generated repositories, cloned tutorial apps, and automated commit-script padding.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-stone-800 flex items-center justify-between text-[11px] text-stone-400">
+                <span>Status: In Research</span>
+                <span class="text-brand-teal font-mono font-semibold">Q2 2027</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 04: Pan-African Tech Hub Verification -->
+          <div class="w-full sm:w-1/2 flex-shrink-0 px-2.5">
+            <div class="h-full p-6 rounded-2xl bg-espresso-900 text-white border border-espresso-800 shadow-md flex flex-col justify-between transition-all hover:border-brand-orange/40">
+              <div>
+                <span class="text-xs font-mono font-bold text-brand-orange tracking-widest uppercase">Phase 04</span>
+                <h4 class="text-base font-bold text-white mt-2 mb-2 flex items-center gap-2">
+                  <span> Pan-African Hub Registry</span>
+                </h4>
+                <p class="text-xs text-stone-300 leading-relaxed font-normal">
+                  Direct indexing and verified community endorsements from African engineering communities across Lagos, Nairobi, Accra, and Kigali.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-stone-800 flex items-center justify-between text-[11px] text-stone-400">
+                <span>Status: Ecosystem Outreach</span>
+                <span class="text-brand-teal font-mono font-semibold">Q3 2027</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Carousel Dot Indicators -->
+      <div class="flex items-center justify-center gap-2 mt-6" id="carousel-dots"></div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+  const form = document.getElementById('audit-form');
+  const btn = document.getElementById('submit-btn');
+  const loader = document.getElementById('loading-state');
+
+  form.addEventListener('submit', () => {
+    btn.disabled = true;
+    btn.classList.add('opacity-60', 'cursor-not-allowed');
+    loader.classList.remove('hidden');
+  });
+
+  // Auto-scroll directly to audit result if rendered
+  window.addEventListener('DOMContentLoaded', () => {
+    const resultElement = document.getElementById('audit-result');
+    if (resultElement) {
+      resultElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  // Snapshot Download Handler (LinkedIn / Social sharing)
+  function downloadCardSnapshot(username) {
+    const card = document.getElementById('audit-result');
+    const downloadBtn = document.getElementById('download-btn');
+    const downloadText = document.getElementById('download-btn-text');
+
+    if (!card) return;
+
+    downloadBtn.disabled = true;
+    downloadText.innerText = 'Generating PNG...';
+
+    html2canvas(card, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#2A1810',
+      logging: false,
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `DevAudit-${username}-Passport.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      downloadBtn.disabled = false;
+      downloadText.innerText = 'Download Snapshot (PNG)';
+    }).catch(err => {
+      console.error('Failed to capture passport:', err);
+      alert('Could not export snapshot. Please try again.');
+      downloadBtn.disabled = false;
+      downloadText.innerText = 'Download Snapshot (PNG)';
+    });
+  }
+
+  // Roadmap Carousel Controller
+  let currentSlide = 0;
+  const track = document.getElementById('carousel-track');
+  const viewport = document.getElementById('carousel-viewport');
+  const dotsContainer = document.getElementById('carousel-dots');
+  const totalCards = track.children.length;
+
+  function getVisibleCards() {
+    return window.innerWidth >= 640 ? 2 : 1;
+  }
+
+  function getMaxIndex() {
+    return totalCards - getVisibleCards();
+  }
+
+  function renderDots() {
+    dotsContainer.innerHTML = '';
+    const maxIdx = getMaxIndex();
+    for (let i = 0; i <= maxIdx; i++) {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = `h-2 rounded-full transition-all duration-300 ${
+        i === currentSlide ? 'w-6 bg-brand-orange' : 'w-2 bg-stone-300 hover:bg-stone-400'
+      }`;
+      dot.onclick = () => goToSlide(i);
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function updateCarousel() {
+    const cardWidthPercentage = 100 / getVisibleCards();
+    track.style.transform = `translateX(-${currentSlide * cardWidthPercentage}%)`;
+    renderDots();
+  }
+
+  function nextSlide() {
+    const maxIdx = getMaxIndex();
+    currentSlide = currentSlide >= maxIdx ? 0 : currentSlide + 1;
+    updateCarousel();
+  }
+
+  function prevSlide() {
+    const maxIdx = getMaxIndex();
+    currentSlide = currentSlide <= 0 ? maxIdx : currentSlide - 1;
+    updateCarousel();
+  }
+
+  function goToSlide(index) {
+    currentSlide = index;
+    updateCarousel();
+  }
+
+  // 5-second automatic sliding timer
+  let autoSlideInterval = setInterval(nextSlide, 5000);
+
+  viewport.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+  viewport.addEventListener('mouseleave', () => {
+    clearInterval(autoSlideInterval);
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  });
+
+  window.addEventListener('resize', () => {
+    if (currentSlide > getMaxIndex()) {
+      currentSlide = getMaxIndex();
+    }
+    updateCarousel();
+  });
+
+  // Initial setup
+  renderDots();
+</script>
+{% endblock %}
