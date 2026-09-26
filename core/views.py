@@ -8,17 +8,13 @@ from django.utils import timezone
 from .models import ProfileReview, TalentProfile
 
 # Service layer imports for GitHub ingestion and Gemini LLM evaluations
-from .services.ai_service import AIService, AIServiceError
+from .services.ai_services import AIService, AIServiceError
 from .services.github_service import GitHubService, GitHubServiceError
 
 
 def index_view(request):
     """
     Renders the single-scroll home/search page.
-    
-    Handles:
-    - Loading instant demo profiles from the database if '?user=<username>' query param exists.
-    - Fetching the 3 most recently evaluated profiles to populate the demo chips.
     """
     # 1. Check if the user clicked one of the instant demo chips (e.g. ?user=Ezra-Men)
     username = request.GET.get("user", "").strip()
@@ -45,12 +41,7 @@ def audit_user_view(request):
     """
     Processes the audit search form submission.
     
-    Workflow:
-    1. Validates POST method and sanitizes username/URL input.
-    2. Enforces IP-based rate limiting (max 5 new evaluations/min).
-    3. Checks the 24-hour database cache to eliminate duplicate external API calls.
-    4. Fetches GitHub repository data and triggers the Gemini evaluation pipeline.
-    5. Saves/updates the candidate record in the DB and renders the result in-place.
+    
     """
     # Guard against accidental GET requests to the submission endpoint
     if request.method != "POST":
