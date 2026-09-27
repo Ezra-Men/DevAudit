@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import os
 from typing import Any, Dict, List, Optional
 import httpx
-
+import requests
 GITHUB_API_BASE = 'https://api.github.com'
 
 
