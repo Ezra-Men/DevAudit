@@ -5,6 +5,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch: # Allows manual trigger from the GitHub UI
 
 jobs:
   test:
@@ -15,10 +16,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13' 
           cache: 'pip'
 
       - name: Install Dependencies
@@ -28,14 +29,14 @@ jobs:
 
       - name: Run Database Migrations
         env:
-          DJANGO_SECRET_KEY: ci-test-secret-key
+          DJANGO_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
           DEBUG: "True"
         run: |
           python manage.py migrate
 
       - name: Run Test Suite
         env:
-          DJANGO_SECRET_KEY: ci-test-secret-key-do
+          DJANGO_SECRET_KEY: ci-test-secret-key-do-not-use-in-production
           DEBUG: "True"
           GEMINI_API_KEY: AIzaSyDummyKeyForMockedTestSuiteRunningInCI99
           GITHUB_TOKEN: ghp_dummyTokenForGitHubActionsTestingEnvironment
